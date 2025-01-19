@@ -3,6 +3,7 @@ package com.shoppingCart.DTOs;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Setter
 @Getter
@@ -17,4 +18,5 @@ public class ProductDTO {
     private BigDecimal price;
     private int inventory;
     private CategoryDTO category;
+    private List<ImageDTO> image;
 }
