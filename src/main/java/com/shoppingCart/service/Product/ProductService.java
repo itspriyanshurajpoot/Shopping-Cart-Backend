@@ -40,13 +40,13 @@ public class ProductService implements IProductService{
     @Override
     public void deleteProduct(Long productId) {
         productRepository.findById(productId).ifPresentOrElse(productRepository::delete,
-                () -> {throw new ProductNotFoundException("Product doesn't exist");});
+                () -> {throw new ResourceNotFoundException("Product doesn't exist");});
     }
 
     @Override
     public ProductDTO updateProduct(ProductDTO request, long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product doesn't exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product doesn't exist"));
 
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                         .orElseThrow(() -> new ResourceNotFoundException("Category doesn't exist"));
@@ -62,7 +62,7 @@ public class ProductService implements IProductService{
 
     @Override
     public ProductDTO getProductById(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product doesn't exist"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product doesn't exist"));
         return productToDto(product);
     }
 

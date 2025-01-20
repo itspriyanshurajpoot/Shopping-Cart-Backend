@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class ImageService implements IImageService {
                 image.setImage(new SerialBlob(f.getBytes()));
                 image.setProduct(product);
 
-                String url = "/api/v1/images/download/";
+                String url = UUID.randomUUID().toString();
                 String downloadUrl = url + image.getImageId();
                 image.setDownloadUrl(downloadUrl);
 
