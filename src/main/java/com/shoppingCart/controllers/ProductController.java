@@ -68,7 +68,7 @@ public class ProductController {
             }
             return ResponseEntity.ok(new ApiListResponse("Found!", Collections.singletonList(allProduct)));
         } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiListResponse(e.getMessage(), null));
         }
     }
 
@@ -81,8 +81,8 @@ public class ProductController {
                 return ResponseEntity.status(NOT_FOUND).body(null);
             }
             return ResponseEntity.ok(new ApiListResponse("Found!", Collections.singletonList(allProductByBrand)));
-        } catch (ProductNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiListResponse(e.getMessage(), null));
         }
     }
 
@@ -97,8 +97,8 @@ public class ProductController {
                 return ResponseEntity.status(NOT_FOUND).body(null);
             }
             return ResponseEntity.ok(new ApiListResponse("Found!", Collections.singletonList(allProductByCategoryName)));
-        } catch (ProductNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(null);
+        }  catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiListResponse(e.getMessage(), null));
         }
     }
 
@@ -112,9 +112,8 @@ public class ProductController {
                 return ResponseEntity.status(NOT_FOUND).body(null);
             }
             return ResponseEntity.ok(new ApiListResponse("Found!", Collections.singletonList(allProducts)));
-        } catch (ProductNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(null);
-
+        }  catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiListResponse(e.getMessage(), null));
         }
     }
 
@@ -127,8 +126,8 @@ public class ProductController {
                 return ResponseEntity.status(NOT_FOUND).body(null);
             }
             return ResponseEntity.ok(new ApiListResponse("Found!", Collections.singletonList(productByName)));
-        } catch (ProductNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(null);
+        }  catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiListResponse(e.getMessage(), null));
         }
     }
 
@@ -141,8 +140,8 @@ public class ProductController {
                 return ResponseEntity.status(NOT_FOUND).body(null);
             }
             return ResponseEntity.ok(new ApiListResponse("Found!", Collections.singletonList(allProducts)));
-        } catch (ProductNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(null);
+        }  catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiListResponse(e.getMessage(), null));
         }
     }
 
