@@ -1,6 +1,7 @@
 package com.shoppingCart.controllers;
 
 import com.shoppingCart.DTOs.ProductDTO;
+import com.shoppingCart.DTOs.ProductInputDTO;
 import com.shoppingCart.exception.ProductNotFoundException;
 import com.shoppingCart.response.ApiListResponse;
 import com.shoppingCart.response.ApiResponse;
@@ -25,7 +26,7 @@ public class ProductController {
 
     // add product
     @PostMapping("/add-product")
-    public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductDTO dto) {
+    public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductInputDTO dto) {
         try {
             return ResponseEntity.ok(new ApiResponse("Added!", productService.addProduct(dto)));
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class ProductController {
 
     // update product
     @PutMapping("/update/product-id/{productId}")
-    public ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductDTO dto, @PathVariable Long productId) {
+    public ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductInputDTO dto, @PathVariable Long productId) {
         try {
             return ResponseEntity.ok(new ApiResponse("Updated!", productService.updateProduct(dto, productId)));
         } catch (Exception e) {

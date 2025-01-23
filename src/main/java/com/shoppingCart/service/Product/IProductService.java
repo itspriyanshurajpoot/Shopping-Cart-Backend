@@ -1,6 +1,7 @@
 package com.shoppingCart.service.Product;
 
 import com.shoppingCart.DTOs.ProductDTO;
+import com.shoppingCart.DTOs.ProductInputDTO;
 import com.shoppingCart.model.Product;
 
 import java.util.List;
@@ -8,13 +9,13 @@ import java.util.List;
 public interface IProductService {
 
     // add product
-    ProductDTO addProduct(ProductDTO dto);
+    ProductDTO addProduct(ProductInputDTO dto);
 
     // delete product
     void deleteProduct(Long productId);
 
     // update product
-    ProductDTO updateProduct(ProductDTO dto, long productId);
+    ProductDTO updateProduct(ProductInputDTO dto, Long productId);
 
     // get product by product id
     ProductDTO getProductById(Long productId);

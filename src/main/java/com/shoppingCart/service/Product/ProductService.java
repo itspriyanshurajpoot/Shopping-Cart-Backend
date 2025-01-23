@@ -1,9 +1,12 @@
 package com.shoppingCart.service.Product;
 
+import com.shoppingCart.DTOs.ImageDTO;
 import com.shoppingCart.DTOs.ProductDTO;
+import com.shoppingCart.DTOs.ProductInputDTO;
 import com.shoppingCart.exception.ProductNotFoundException;
 import com.shoppingCart.exception.ResourceNotFoundException;
 import com.shoppingCart.model.Category;
+import com.shoppingCart.model.Image;
 import com.shoppingCart.model.Product;
 import com.shoppingCart.repository.CategoryRepository;
 import com.shoppingCart.repository.ProductRepository;
@@ -23,15 +26,17 @@ public class ProductService implements IProductService{
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
     @Override
-    public ProductDTO addProduct(ProductDTO request) {
+    public ProductDTO addProduct(ProductInputDTO request) {
         // check the category exist or not , if yes the set it else create new category
-        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
-                .orElseGet(() -> {
-                    Category newCategory = new Category(request.getCategory().getName());
-                    return categoryRepository.save(newCategory);
-                });
 
-        Product product = dtoToProduct(request);
+        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategoryName()))
+                .orElseGet(() -> {
+                    Category newCategory = new Category();
+                    newCategory.setName(request.getCategoryName());
+                    return newCategory;
+                } );
+
+        Product product = inputDtoToProduct(request);
         product.setBrand(request.getBrand().toUpperCase());
         product.setCategory(category);
         return productToDto(productRepository.save(product));
@@ -44,14 +49,13 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public ProductDTO updateProduct(ProductDTO request, long productId) {
+    public ProductDTO updateProduct(ProductInputDTO request, Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product doesn't exist"));
 
-        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
+        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategoryName()))
                         .orElseThrow(() -> new ResourceNotFoundException("Category doesn't exist"));
 
-        product.setProductId(request.getProductId());
         product.setName(request.getName());
         product.setBrand(request.getBrand());
         product.setDescription(request.getDescription());
@@ -121,6 +125,24 @@ public class ProductService implements IProductService{
 
     // product to dto
     public ProductDTO productToDto(Product product){
-        return modelMapper.map(product, ProductDTO.class);
+        ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+        List<Image> images = product.getImage();
+        List<ImageDTO> imageDTOS = images.stream().map(image -> modelMapper.map(image, ImageDTO.class))
+                .toList();
+
+        dto.setImage(imageDTOS);
+        return dto;
+    }
+
+    // input dto to product
+    private Product inputDtoToProduct(ProductInputDTO dto){
+        Product product = new Product();
+        product.setName(dto.getName());
+        product.setBrand(dto.getBrand());
+        product.setDescription(dto.getDescription());
+        product.setPrice(dto.getPrice());
+        product.setInventory(dto.getInventory());
+
+        return product;
     }
 }
